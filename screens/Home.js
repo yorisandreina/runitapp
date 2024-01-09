@@ -34,63 +34,66 @@ const Home = () => {
   const [openModal, setOpenModal] = useState(false);
   const [finishTime, setFinishTime] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  
 
   const navigation = useNavigation();
 
-    useEffect(() => {
-      const unsubscribe = navigation.addListener("focus", () => {
-        const currentUser = auth.currentUser;
-        if (currentUser) {
-          const userDocRef = doc(db, "users", currentUser.uid);
-          const getUserData = async () => {
-            const userDoc = await getDoc(userDocRef);
-            const userData = userDoc.data();
-            setUserData(userData);
-          };
-          getUserData();
-        }
-      });
-
-      return unsubscribe;
-    }, [navigation]);
-
   useEffect(() => {
-    let collectionName = "marathonTraining";
-    if (userData && userData.raceDistance == "21km") {
-      collectionName = "halfMarathonTraining";
-    }
-    switch (collectionName) {
-      case "marathonTraining":
-        setTextToDisplay("Marathon Training");
-        break;
-      case "halfMarathonTraining":
-        setTextToDisplay("Half Marathon Training");
-        break;
-      default:
-        setTextToDisplay("5k Training");
-    }
-
-    const q = query(collection(db, collectionName), where("week", "!=", ""));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const weeksArray = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        week: doc.data().week,
-      }));
-      weeksArray.sort((a, b) => b.week - a.week);
-      setWeeks(weeksArray);
-      setLoading(false);
-
-      const currentDate = new Date();
-      const daysUntilRace =
-        (new Date(userData.raceDate) - currentDate) / (1000 * 60 * 60 * 24);
-      const weeksUntilRace = Math.ceil(daysUntilRace / 7);
-
-      setWeeks((prevWeeks) =>
-        prevWeeks.map((week) => ({ ...week, weeksUntilRace }))
-      );
+    const unsubscribe = navigation.addListener("focus", () => {
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        const getUserData = async () => {
+          const userDoc = await getDoc(userDocRef);
+          const userData = userDoc.data();
+          setUserData(userData);
+        };
+        getUserData();
+      }
     });
-    return () => unsubscribe();
-  }, [userData]);
+
+    return unsubscribe;
+  }, [navigation]);
+
+   useEffect(() => {
+     let collectionName = "marathonTraining";
+     if (userData && userData.raceDistance == "21km") {
+       collectionName = "halfMarathonTraining";
+     }
+     switch (collectionName) {
+       case "marathonTraining":
+         setTextToDisplay("Marathon Training");
+         break;
+       case "halfMarathonTraining":
+         setTextToDisplay("Half Marathon Training");
+         break;
+       default:
+         setTextToDisplay("5k Training");
+     }
+
+     const q = query(collection(db, collectionName), where("week", "!=", ""));
+     const unsubscribe = onSnapshot(q, (querySnapshot) => {
+       const weeksArray = querySnapshot.docs.map((doc) => ({
+         id: doc.id,
+         week: doc.data().week,
+       }));
+       weeksArray.sort((a, b) => b.week - a.week);
+       setWeeks(weeksArray);
+       setLoading(false);
+
+       if (userData) {
+         const currentDate = new Date();
+         const daysUntilRace =
+           (new Date(userData.raceDate) - currentDate) / (1000 * 60 * 60 * 24);
+         const weeksUntilRace = Math.ceil(daysUntilRace / 7);
+
+         setWeeks((prevWeeks) =>
+           prevWeeks.map((week) => ({ ...week, weeksUntilRace }))
+         );
+       }
+     });
+     return () => unsubscribe();
+   }, [userData]);
 
   const handleLogout = async () => {
     try {
@@ -121,9 +124,9 @@ const Home = () => {
 
   const handleMarkAsCompleted = async () => {
     try {
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        const uid = currentUser.uid;
+      const userData = auth.userData;
+      if (userData) {
+        const uid = userData.uid;
         const userDocRef = doc(db, "users", uid);
         const userDoc = await getDoc(userDocRef);
         const userData = userDoc.data();
@@ -145,7 +148,6 @@ const Home = () => {
         navigation.navigate("MyAchievements");
       }
     } catch (error) {
-      console.log("Error: " + error.message);
       Alert.alert("Failed to mark as completed");
     }
   };
@@ -159,7 +161,7 @@ const Home = () => {
     }
   }
 
-  function renderModalCompleted() {
+ function renderModalCompleted() {
     return (
       <Modal visible={modalVisible} animationType="none" transparent={true}>
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>

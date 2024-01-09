@@ -16,15 +16,15 @@ import {
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app, db } from "../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
+import useCurrentUser from "../components/UserData";
 
 const Workouts = ({ route }) => {
   const { selectedWeek } = route.params;
   const [workouts, setWorkouts] = useState("");
   const [loading, setLoading] = useState(true);
   const [racePace, setRacePace] = useState("");
-  const [currentUser, setCurrentUser] = useState(null);
 
-  const auth = getAuth(app);
+  const currentUser = useCurrentUser();
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -43,13 +43,6 @@ const Workouts = ({ route }) => {
       setLoading(false);
     });
 
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-    });
     return () => unsubscribe();
   }, []);
 

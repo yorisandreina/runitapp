@@ -39,7 +39,6 @@ const Login = () => {
         {
           persistence: "SESSION",
         });
-      const user = userCredential.user;
       navigation.navigate("Home");
     } catch (error) {
       Alert.alert(error);

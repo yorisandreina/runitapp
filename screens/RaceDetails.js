@@ -9,8 +9,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { app, db } from "../firebaseConfig";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { db } from "../firebaseConfig";
 import {
   collection,
   doc,
@@ -20,6 +19,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
+import useCurrentUser from "../components/UserData";
 
 const RaceDetails = () => {
   const [raceName, setRaceName] = useState("");
@@ -29,21 +29,8 @@ const RaceDetails = () => {
   const [minutes, setMinutes] = useState("00");
   const [seconds, setSeconds] = useState("00");
 
-  const user = getAuth(app);
+  const currentUser = useCurrentUser();
   const navigation = useNavigation();
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(user, (user) => {
-      if (user) {
-        setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   const handleSave = async () => {
     if (!currentUser) {
@@ -79,7 +66,7 @@ const RaceDetails = () => {
     }
   };
 
-  const handleDistanceChange = (item, itemIndex) => {
+  const handleDistanceChange = (item) => {
     setDistance(item);
   };
 
@@ -88,11 +75,11 @@ const RaceDetails = () => {
     setDate(currentDate);
   };
 
-  const handleMinutesChange = (item, itemIndex) => {
+  const handleMinutesChange = (item) => {
     setMinutes(item);
   };
 
-  const handleSecondsChange = (item, itemIndex) => {
+  const handleSecondsChange = (item) => {
     setSeconds(item);
   };
 
