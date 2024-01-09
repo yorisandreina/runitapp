@@ -34,7 +34,6 @@ const Home = () => {
   const [openModal, setOpenModal] = useState(false);
   const [finishTime, setFinishTime] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const [weeksLeft, setWeeksLeft] = useState(0);
 
   const navigation = useNavigation();
 
