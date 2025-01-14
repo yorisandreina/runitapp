@@ -52,7 +52,9 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: "/Users/andreina/app/assets/logo.PNG" }}
+        source={{
+          uri: "https://raw.githubusercontent.com/yorisandreina/runitapp/main/logo.PNG",
+        }}
         style={styles.logo}
       />
       <TextInput

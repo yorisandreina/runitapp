@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/logo.PNG",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/logo.PNG",
       "resizeMode": "contain",
@@ -15,13 +16,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yorisandreina.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.PNG",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.yorisandreina.app"
     },
     "web": {
       "favicon": "./assets/logo.PNG"
