@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import {
   View,
-  Text,
-  TextInput,
   TouchableOpacity,
   Alert,
-  StyleSheet,
 } from "react-native";
 import {
   createUserWithEmailAndPassword,
@@ -14,6 +11,8 @@ import { useNavigation } from "@react-navigation/native";
 import { db, auth } from "../firebaseConfig";
 import { Image } from "react-native";
 import { setDoc, doc } from "firebase/firestore";
+import styles from "../styles/Auth.styles";
+import { TextInput, Button, Text } from "react-native-paper";
 
 const CreateAccount = () => {
   const [name, setName] = useState("");
@@ -21,6 +20,10 @@ const CreateAccount = () => {
   const [password, setPassword] = useState("");
 
   const navigation = useNavigation();
+
+  const isFormValid = () => {
+    return name.trim() !== "" && email.trim() !== "" && password.trim() !== "";
+  };
 
   const handleSignUp = async () => {
     try {
@@ -38,85 +41,77 @@ const CreateAccount = () => {
         email: email,
         uid: user.uid,
       });
-      Alert.alert("User account created successfully!");
+      Alert.alert("Account created successfully!");
       navigation.navigate("RaceDetails");
     } catch (error) {
-      Alert.alert(error.message);
+      Alert.alert("Unable to process request, please try again.");
     }
   };
+
+  const handleGoBack = async () => {
+    navigation.navigate('Login');
+  }
 
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: "/Users/andreina/runit/assets/logo.PNG" }}
+        source={{
+          uri: "https://raw.githubusercontent.com/yorisandreina/runitapp/main/logo.PNG",
+        }}
         style={styles.logo}
       />
       <TextInput
-        placeholder="Name"
-        value={name}
+        label="Name"
+        value={email}
         onChangeText={(text) => setName(text)}
         autoCapitalize="none"
+        keyboardType="text"
+        mode="outlined"
         style={styles.input}
+        outlineColor="#c9c9c9"
       />
       <TextInput
-        placeholder="Email"
+        label="Email"
         value={email}
         onChangeText={(text) => setEmail(text)}
         autoCapitalize="none"
+        keyboardType="email-address"
+        mode="outlined"
         style={styles.input}
+        outlineColor="#c9c9c9"
       />
       <TextInput
-        placeholder="Password"
+        label="Password"
         value={password}
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
         autoCapitalize="none"
+        mode="outlined"
         style={styles.input}
+        outlineColor="#c9c9c9"
       />
-      <TouchableOpacity onPress={handleSignUp} style={styles.buttonSignup}>
-        <Text style={styles.buttonTextSignup}>Sign Up</Text>
-      </TouchableOpacity>
+      <Button
+        mode="contained"
+        onPress={handleSignUp}
+        style={[
+          styles.button,
+          { backgroundColor: isFormValid() ? "#322eb8" : "#c9c9c9" },
+        ]}
+        disabled={!isFormValid()}
+        labelStyle={styles.buttonText}
+      >
+        Sign Up
+      </Button>
+      <Button
+        mode="contained"
+        onPress={handleGoBack}
+        style={styles.buttonSignup}
+        labelStyle={styles.buttonTextSignup}
+      >
+        Back to Login
+      </Button>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    flex: 1,
-    padding: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#fff",
-  },
-  input: {
-    marginBottom: 20,
-    padding: 15,
-    width: "100%",
-    backgroundColor: "white",
-    borderRadius: 20,
-    borderWidth: 1.5,
-    borderColor: "#322eb8",
-    fontSize: 14,
-  },
-  buttonSignup: {
-    marginTop: 20,
-    padding: 15,
-    width: "100%",
-    backgroundColor: "#322EB0",
-    borderRadius: 20,
-  },
-  buttonTextSignup: {
-    color: "#fff",
-    textAlign: "center",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
-  },
-});
 
 export default CreateAccount;

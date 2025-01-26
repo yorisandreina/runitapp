@@ -1,0 +1,135 @@
+import { StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 30,
+    backgroundColor: "#fff",
+  },
+  title: {
+    fontSize: 26,
+    paddingTop: 40,
+    paddingBottom: 20,
+    marginHorizontal: 5,
+    fontWeight: "600",
+  },
+  item: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    marginVertical: 10,
+    backgroundColor: "#f2f2f2",
+    borderRadius: 20,
+  },
+  itemText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  deleteText: {
+    fontSize: 14,
+    color: "red",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalBox: {
+    backgroundColor: "#ffff",
+    borderRadius: 20,
+  },
+  actionButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingRight: 15,
+    borderColor: "#f2f2f2",
+    borderWidth: 1.5,
+    borderRadius: 20,
+    marginVertical: 10,
+  },
+  actionButtonText: {
+    color: "#000",
+    fontSize: 16,
+    fontWeight: "500",
+    padding: 18,
+  },
+  modalText: {
+    color: "#000",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  buttonContainers: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  markAsCompletedButton: {
+    alignItems: "center",
+    width: "70%",
+    backgroundColor: "#322eb8",
+    padding: 15,
+    borderRadius: 20,
+    marginTop: 20,
+  },
+  markAsCompletedText: {
+    color: "#fff",
+    fontWeight: "500",
+    fontSize: 16,
+  },
+  titleRenderModalCompleted: {
+    fontSize: 26,
+    paddingTop: 20,
+    paddingBottom: 20,
+    marginHorizontal: 5,
+    fontWeight: "600",
+  },
+  markAsCompletedInput: {
+    padding: 15,
+    marginBottom: 20,
+    borderColor: "#f2f2f2",
+    borderWidth: 1.5,
+    borderRadius: 20,
+  },
+  modalSaveDataButton: {
+    alignItems: "center",
+    backgroundColor: "#322eb8",
+    borderRadius: 20,
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  modalSaveDataText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+    padding: 15,
+  },
+  settingsButton: {
+    backgroundColor: "#f2f2f2",
+    alignItems: "center",
+    marginTop: 20,
+    borderRadius: 20,
+    width: "15%",
+    padding: 15,
+  },
+  currentWeek: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    marginVertical: 10,
+    backgroundColor: "#d6d6d6",
+    borderRadius: 20,
+  },
+  currentWeekText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#000",
+  },
+});
+
+export default styles;

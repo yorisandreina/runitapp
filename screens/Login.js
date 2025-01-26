@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  StyleSheet,
-} from "react-native";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { View, Alert, Image } from "react-native";
+import { TextInput, Button } from "react-native-paper";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
-import { Image } from "react-native";
+import styles from "../styles/Auth.styles";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,6 +12,8 @@ const Login = () => {
 
   const navigation = useNavigation();
   const authLogin = getAuth();
+
+  const isFormValid = () => email.trim() !== "" && password.trim() !== "";
 
   useEffect(() => {
     return () => {
@@ -32,16 +25,15 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        authLogin,
-        email,
-        password,
-        {
-          persistence: "SESSION",
-        });
+      await signInWithEmailAndPassword(authLogin, email, password, {
+        persistence: "SESSION",
+      });
       navigation.navigate("Home");
     } catch (error) {
-      Alert.alert(error);
+      Alert.alert(
+        "Login Error",
+        "The email and password you entered did not match our records."
+      );
     }
   };
 
@@ -58,82 +50,47 @@ const Login = () => {
         style={styles.logo}
       />
       <TextInput
-        placeholder="Email"
+        label="Email"
         value={email}
         onChangeText={(text) => setEmail(text)}
         autoCapitalize="none"
+        keyboardType="email-address"
+        mode="outlined"
         style={styles.input}
+        outlineColor="#c9c9c9"
       />
       <TextInput
-        placeholder="Password"
+        label="Password"
         value={password}
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
         autoCapitalize="none"
+        mode="outlined"
         style={styles.input}
+        outlineColor="#c9c9c9"
       />
-      <TouchableOpacity onPress={handleLogin} style={styles.buttonLogin}>
-        <Text style={styles.buttonTextLogin}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      <Button
+        mode="contained"
+        onPress={handleLogin}
+        disabled={!isFormValid()}
+        style={[
+          styles.button,
+          { backgroundColor: isFormValid() ? "#322eb8" : "#c9c9c9" },
+        ]}
+        labelStyle={styles.buttonText}
+      >
+        Login
+      </Button>
+      <Button
+        mode="contained"
         onPress={handleCreateAccount}
         style={styles.buttonSignup}
+        labelStyle={styles.buttonTextSignup}
       >
-        <Text style={styles.buttonTextSignup}>Create account</Text>
-      </TouchableOpacity>
+        Create Account
+      </Button>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    flex: 1,
-    padding: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#fff",
-  },
-  input: {
-    marginBottom: 20,
-    padding: 15,
-    width: "100%",
-    backgroundColor: "white",
-    borderRadius: 20,
-    borderWidth: 1.5,
-    borderColor: "#322eb8",
-    fontSize: 14,
-  },
-  buttonLogin: {
-    marginTop: 20,
-    padding: 15,
-    width: "100%",
-    backgroundColor: "#322EB0",
-    borderRadius: 20,
-  },
-  buttonSignup: {
-    marginTop: 20,
-    padding: 10,
-    width: "100%",
-    backgroundColor: "#fff",
-    borderRadius: 20,
-  },
-  buttonTextLogin: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  buttonTextSignup: {
-    color: "#322EB0",
-    textAlign: "center",
-    fontSize: 16,
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
-  },
-});
 
 export default Login;
