@@ -33,22 +33,27 @@ const styles = StyleSheet.create({
     color: "red",
   },
   modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "white",
+    padding: 10,
+    marginHorizontal: 20,
+    borderRadius: 20,
+    alignItems: "flex-start",
+  },
+  modalContainerCompleted: {
+    backgroundColor: "white",
+    padding: 25,
+    marginHorizontal: 20,
+    borderRadius: 20,
   },
   modalBox: {
     backgroundColor: "#ffff",
     borderRadius: 20,
   },
-  actionButtons: {
+  navbar: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingRight: 15,
-    borderColor: "#f2f2f2",
-    borderWidth: 1.5,
-    borderRadius: 20,
+    backgroundColor: "#fffff",
     marginVertical: 10,
   },
   actionButtonText: {
@@ -71,14 +76,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "70%",
     backgroundColor: "#322eb8",
-    padding: 15,
-    borderRadius: 20,
-    marginTop: 20,
+    borderRadius: 10,
+    borderWidth: 0,
   },
   markAsCompletedText: {
     color: "#fff",
     fontWeight: "500",
-    fontSize: 16,
   },
   titleRenderModalCompleted: {
     fontSize: 26,
@@ -109,11 +112,9 @@ const styles = StyleSheet.create({
   },
   settingsButton: {
     backgroundColor: "#f2f2f2",
-    alignItems: "center",
-    marginTop: 20,
-    borderRadius: 20,
+    borderRadius: 10,
     width: "15%",
-    padding: 15,
+    borderWidth: 0,
   },
   currentWeek: {
     flexDirection: "row",
@@ -122,13 +123,48 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 25,
     marginVertical: 10,
-    backgroundColor: "#d6d6d6",
+    backgroundColor: "#0000",
     borderRadius: 20,
   },
   currentWeekText: {
     fontSize: 16,
     fontWeight: "600",
     color: "#000",
+  },
+  cardList: {
+    marginBottom: 16,
+  },
+  card: {
+    backgroundColor: "#ffff",
+    marginVertical: 8,
+    borderWidth: 0,
+    backgroundColor: "#f2f2f2",
+  },
+  cardContent: {
+    flexDirection: "row",
+    borderRadius: 8,
+    justifyContent: "space-between",
+    backgroundColor: "#f2f2f2",
+    padding: 30,
+  },
+  cardText: {
+    fontSize: 16,
+    color: "#555",
+  },
+  modalItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 5,
+  },
+  textInput: {
+    marginTop: 10,
+    marginBottom: 20,
+    backgroundColor: "white",
+  },
+  saveButton: {
+    borderRadius: 10,
+    backgroundColor: "#322eb8",
   },
 });
 
