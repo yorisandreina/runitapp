@@ -58,7 +58,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#c9c9c9",
     borderRadius: 5,
-    padding: 15
+    padding: 15,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    width: "100%",
+    height: "100%",
+  },
+  loadingText: {
+    color: "white",
+    fontSize: 18,
+    marginBottom: 10,
   },
 });
 

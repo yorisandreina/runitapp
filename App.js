@@ -6,14 +6,13 @@ import CreateAccount from "./screens/CreateAccount";
 import RaceDetails from "./screens/RaceDetails";
 import Workouts from "./screens/Workouts";
 import MyAchievements from "./screens/MyAchievements";
-import Test from "./screens/Test";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Login"
           component={Login}
@@ -42,11 +41,6 @@ export default function App() {
         <Stack.Screen
           name="MyAchievements"
           component={MyAchievements}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Test"
-          component={Test}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

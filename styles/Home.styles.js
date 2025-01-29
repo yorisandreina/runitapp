@@ -97,13 +97,6 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderRadius: 20,
   },
-  modalSaveDataButton: {
-    alignItems: "center",
-    backgroundColor: "#322eb8",
-    borderRadius: 20,
-    justifyContent: "center",
-    marginTop: 20,
-  },
   modalSaveDataText: {
     color: "#fff",
     fontSize: 16,
@@ -118,18 +111,14 @@ const styles = StyleSheet.create({
   },
   currentWeek: {
     flexDirection: "row",
+    borderRadius: 10,
     justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 15,
-    paddingHorizontal: 25,
-    marginVertical: 10,
-    backgroundColor: "#0000",
-    borderRadius: 20,
+    backgroundColor: "#c9c9c9",
+    padding: 30,
   },
   currentWeekText: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#000",
+    color: "#555",
   },
   cardList: {
     marginBottom: 16,
@@ -138,7 +127,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffff",
     marginVertical: 8,
     borderWidth: 0,
-    backgroundColor: "#f2f2f2",
   },
   cardContent: {
     flexDirection: "row",
@@ -165,6 +153,14 @@ const styles = StyleSheet.create({
   saveButton: {
     borderRadius: 10,
     backgroundColor: "#322eb8",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white", // Optional: Prevent flickering when switching to content
+    width: "100%",
+    height: "100%",
   },
 });
 

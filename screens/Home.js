@@ -18,6 +18,7 @@ import {
   IconButton,
   Card,
   Icon,
+  ActivityIndicator,
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { signOut } from "firebase/auth";
@@ -35,6 +36,7 @@ import styles from "../styles/Home.styles";
 
 const Home = () => {
   const [weeks, setWeeks] = useState([]);
+  const [weeksUntilRace, setWeeksUntilRace] = useState("");
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [textToDisplay, setTextToDisplay] = useState("");
@@ -85,6 +87,16 @@ const Home = () => {
       setLoading(false);
     });
 
+    if (userData) {
+         const currentDate = new Date();
+         const daysUntilRace =
+           (new Date(userData.raceDate) - currentDate) / (1000 * 60 * 60 * 24);
+         const calculateWeeksUntilRace = Math.ceil(daysUntilRace / 7);
+
+         setWeeksUntilRace(calculateWeeksUntilRace);
+
+       }
+
     return () => unsubscribe();
   }, [userData]);
 
@@ -133,7 +145,7 @@ const Home = () => {
         contentContainerStyle={styles.modalContainerCompleted}
       >
           <View>
-            <Text style={styles.modalTitle}>Input your finish time:</Text>
+            <Text>Input your finish time:</Text>
             <TextInput
               label="Finish Time"
               value={finishTime}
@@ -199,45 +211,64 @@ const Home = () => {
 
   return (
     <PaperProvider>
-      <View style={styles.container}>
-        <Text style={styles.title}>{textToDisplay}</Text>
-        <ScrollView style={styles.cardList}>
-          {weeks.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              onPress={() => handleWorkouts(item.week)}
-            >
-              <Card style={styles.card}>
-                <Card.Content style={styles.cardContent}>
-                  <Text>{item.week}</Text>
-                  <Icon source="arrow-right" color="#322eb8" size={22} />
-                </Card.Content>
-              </Card>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-        <View style={styles.navbar}>
-          <IconButton
-            icon="menu"
-            size={22}
-            mode="outlined"
-            color="#0000"
-            onPress={() => setIsResetModalVisible(true)}
-            style={styles.settingsButton}
-          >
-            Open Modal
-          </IconButton>
-          <Button
-            mode="outlined"
-            onPress={() => setIsCompletedModalVisible(true)}
-            style={styles.markAsCompletedButton}
-          >
-            <Text style={styles.markAsCompletedText}>Mark as Completed</Text>
-          </Button>
+      {loading ? (
+        // Full-screen loading indicator
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#322eb8" />
         </View>
-        {renderCompletedModal()}
-        {renderResetModal()}
-      </View>
+      ) : (
+        // Main content only renders when loading is false
+        <View style={styles.container}>
+          <Text style={styles.title}>{textToDisplay}</Text>
+          <ScrollView style={styles.cardList}>
+            {weeks.map((item) => {
+              const isCurrentWeek = item.week === weeksUntilRace;
+              const cardContent = isCurrentWeek
+                ? styles.currentWeek
+                : styles.cardContent;
+              const textStyle = isCurrentWeek
+                ? styles.currentWeekText
+                : styles.cardText;
+
+              return (
+                <TouchableOpacity
+                  key={item.id}
+                  onPress={() => handleWorkouts(item.week)}
+                  activeOpacity={0.8}
+                >
+                  <Card style={styles.card}>
+                    <Card.Content style={cardContent}>
+                      <Text style={textStyle}>{item.week}</Text>
+                      <Icon source="arrow-right" color="#322eb8" size={22} />
+                    </Card.Content>
+                  </Card>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+
+          <View style={styles.navbar}>
+            <IconButton
+              icon="menu"
+              size={22}
+              mode="outlined"
+              color="#0000"
+              onPress={() => setIsResetModalVisible(true)}
+              style={styles.settingsButton}
+            >
+            </IconButton>
+            <Button
+              mode="outlined"
+              onPress={() => setIsCompletedModalVisible(true)}
+              style={styles.markAsCompletedButton}
+            >
+              <Text style={styles.markAsCompletedText}>Mark as Completed</Text>
+            </Button>
+          </View>
+          {renderCompletedModal()}
+          {renderResetModal()}
+        </View>
+      )}
     </PaperProvider>
   );
 };
