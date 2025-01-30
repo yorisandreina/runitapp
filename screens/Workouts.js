@@ -1,10 +1,8 @@
 import {
   View,
-  Text,
-  TouchableOpacity,
-  FlatList,
   Alert,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import {
@@ -13,16 +11,18 @@ import {
   collection,
   query,
 } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { app, db } from "../firebaseConfig";
+import { Text, Button, ActivityIndicator, Card, IconButton } from "react-native-paper";
+import { db } from "../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import useCurrentUser from "../components/UserData";
+import styles from "../styles/Workouts.styles";
 
 const Workouts = ({ route }) => {
   const { selectedWeek } = route.params;
   const [workouts, setWorkouts] = useState("");
   const [loading, setLoading] = useState(true);
   const [racePace, setRacePace] = useState("");
+  let paceSeconds;
 
   const currentUser = useCurrentUser();
   const navigation = useNavigation();
@@ -216,107 +216,56 @@ const Workouts = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Week {selectedWeek}</Text>
-      <Text style={styles.subtitle}>Intervals</Text>
-      {loading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          data={workouts}
-          renderItem={renderItemIntervals}
-          keyExtractor={(item) => item.id}
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.headingContainer}>
+        <IconButton
+          icon="arrow-left"
+          size={24}
+          onPress={handleBack}
+          iconColor="#322eb8"
         />
-      )}
-      <Text style={styles.subtitle}>Tempo</Text>
-      {loading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          data={workouts}
-          renderItem={renderItemTempo}
-          keyExtractor={(item) => item.id}
-        />
-      )}
-      <Text style={styles.subtitle}>Long Run</Text>
-      {loading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          data={workouts}
-          renderItem={renderItemLongRun}
-          keyExtractor={(item) => item.id}
-        />
-      )}
-      <TouchableOpacity onPress={handleBack} style={styles.logoutButton}>
-        <Text style={styles.logoutButtonText}>Back</Text>
-      </TouchableOpacity>
-    </View>
+        <Text style={styles.title}>Week {selectedWeek}</Text>
+      </View>
+      <Card style={styles.card} mode="contained">
+        <Card.Title title="Intervals" titleVariant="titleMedium" />
+        <Card.Content>
+          {loading ? (
+            <ActivityIndicator animating size="large" />
+          ) : (
+            workouts.map((item) => (
+              <View key={item.id}>{renderItemIntervals({ item })}</View>
+            ))
+          )}
+        </Card.Content>
+      </Card>
+
+      <Card style={styles.card} mode="contained">
+        <Card.Title title="Tempo" titleVariant="titleMedium" />
+        <Card.Content>
+          {loading ? (
+            <ActivityIndicator animating size="large" />
+          ) : (
+            workouts.map((item) => (
+              <View key={item.id}>{renderItemTempo({ item })}</View>
+            ))
+          )}
+        </Card.Content>
+      </Card>
+
+      <Card style={styles.card} mode="contained">
+        <Card.Title title="Long Run" titleVariant="titleMedium" />
+        <Card.Content>
+          {loading ? (
+            <ActivityIndicator animating size="large" />
+          ) : (
+            workouts.map((item) => (
+              <View key={item.id}>{renderItemLongRun({ item })}</View>
+            ))
+          )}
+        </Card.Content>
+      </Card>
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 30,
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 26,
-    marginVertical: 20,
-    marginTop: 40,
-    marginHorizontal: 5,
-    fontWeight: "600",
-  },
-  subtitle: {
-    fontSize: 20,
-    marginVertical: 10,
-    marginHorizontal: 5,
-  },
-  taskItem: {
-    flexDirection: "column",
-    justifyContent: "space-around",
-    alignItems: "center",
-    backgroundColor: "#f2f2f2",
-    padding: 8,
-    borderRadius: 20,
-  },
-  taskItemTempo: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#f2f2f2",
-    padding: 15,
-    borderRadius: 20,
-    marginVertical: 10,
-  },
-  taskText: {
-    fontSize: 16,
-  },
-  taskTextTempo: {
-    fontSize: 16,
-    paddingHorizontal: 15,
-  },
-  deleteText: {
-    fontSize: 14,
-    color: "red",
-  },
-  deleteTextTempo: {
-    fontSize: 14,
-    color: "red",
-  },
-  logoutButton: {
-    backgroundColor: "#322eb8",
-    alignItems: "center",
-    marginVertical: 50,
-    borderRadius: 20,
-  },
-  logoutButtonText: {
-    fontSize: 16,
-    color: "white",
-    padding: 15,
-  },
-});
 
 export default Workouts;

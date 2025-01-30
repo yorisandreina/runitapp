@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   TouchableOpacity,
-  FlatList,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
 } from "react-native";
 import {
@@ -212,12 +209,10 @@ const Home = () => {
   return (
     <PaperProvider>
       {loading ? (
-        // Full-screen loading indicator
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#322eb8" />
         </View>
       ) : (
-        // Main content only renders when loading is false
         <View style={styles.container}>
           <Text style={styles.title}>{textToDisplay}</Text>
           <ScrollView style={styles.cardList}>
