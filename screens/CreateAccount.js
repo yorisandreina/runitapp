@@ -44,6 +44,7 @@ const CreateAccount = () => {
       Alert.alert("Account created successfully!");
       navigation.navigate("RaceDetails");
     } catch (error) {
+      console.error(error);
       Alert.alert("Unable to process request, please try again.");
     }
   };
@@ -62,9 +63,8 @@ const CreateAccount = () => {
       />
       <TextInput
         label="Name"
-        value={email}
+        value={name}
         onChangeText={(text) => setName(text)}
-        autoCapitalize="none"
         keyboardType="text"
         mode="outlined"
         style={styles.input}
@@ -74,8 +74,8 @@ const CreateAccount = () => {
         label="Email"
         value={email}
         onChangeText={(text) => setEmail(text)}
-        autoCapitalize="none"
         keyboardType="email-address"
+        autoCapitalize="none"
         mode="outlined"
         style={styles.input}
         outlineColor="#c9c9c9"

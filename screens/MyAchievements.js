@@ -1,9 +1,11 @@
-import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet } from 'react-native'
+import { View, FlatList, Alert, ScrollView } from 'react-native';
+import { Text, Card, Button, IconButton } from "react-native-paper";
 import React, { useEffect, useState } from 'react'
 import { auth, db } from '../firebaseConfig';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { SvgXml } from 'react-native-svg';
+import styles from '../styles/Achievements.styles';
 
 const MyAchievements = () => {
   const [userData, setUserData] = useState(null);
@@ -83,81 +85,34 @@ const MyAchievements = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>My Achievements</Text>
-      <FlatList
-        data={achievements}
-        renderItem={({ item }) => renderAchievement(item)}
-        keyExtractor={(item) => item.id}
-      />
-      <View style={styles.buttonContainers}>
-        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <SvgXml
-            xml={`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6M12 5l-7 7 7 7"/></svg>`}
-            width={24}
-            height={24}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
+      <View style={styles.headingContainer}>
+        <IconButton
+          icon="arrow-left"
+          size={24}
+          onPress={handleBack}
+          iconColor="#322eb8"
+        />
+        <Text variant="titleLarge" style={styles.title}>
+          My Achievements
+        </Text>
       </View>
+
+      <ScrollView>
+        {achievements.map((item) => (
+          <Card key={item.id} mode="contained" style={styles.card}>
+            <Card.Content>{renderAchievement(item)} </Card.Content>
+          </Card>
+        ))}
+      </ScrollView>
+      <Button
+        mode="contained"
+        onPress={handleLogout}
+        style={styles.logoutButton}
+      >
+        Logout
+      </Button>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 30,
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 26,
-    paddingTop: 40,
-    paddingBottom: 20,
-    marginHorizontal: 5,
-    fontWeight: "600",
-  },
-  item: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 15,
-    paddingHorizontal: 25,
-    marginVertical: 10,
-    backgroundColor: "#f2f2f2",
-    borderRadius: 20,
-  },
-  itemText: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  buttonContainers: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  backButton: {
-    backgroundColor: "#322eb8",
-    alignItems: "center",
-    marginVertical: 30,
-    borderRadius: 20,
-    width: "15%",
-    padding: 15,
-  },
-  logoutButton: {
-    alignItems: "center",
-    width: "70%",
-    backgroundColor: "#f2f2f2",
-    padding: 15,
-    borderRadius: 20,
-  },
-  logoutText: {
-    color: "#000",
-    fontWeight: "500",
-    fontSize: 16,
-  },
-});
 
 export default MyAchievements;
