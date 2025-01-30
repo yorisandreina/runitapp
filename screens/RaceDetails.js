@@ -15,7 +15,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
-import useCurrentUser from "../components/UserData";
+import useCurrentUser from "../utils/UserData";
 import { Picker } from "@react-native-picker/picker";
 import styles from "../styles/RaceDetails.styles";
 import { TextInput, Button, Text, Icon, ActivityIndicator } from "react-native-paper";

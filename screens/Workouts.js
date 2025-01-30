@@ -14,7 +14,7 @@ import {
 import { Text, Button, ActivityIndicator, Card, IconButton } from "react-native-paper";
 import { db } from "../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
-import useCurrentUser from "../components/UserData";
+import useCurrentUser from "../utils/UserData";
 import styles from "../styles/Workouts.styles";
 
 const Workouts = ({ route }) => {
