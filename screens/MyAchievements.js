@@ -1,15 +1,22 @@
-import { View, FlatList, Alert, ScrollView } from 'react-native';
+import { View, ScrollView, ActivityIndicator } from "react-native";
 import { Text, Card, Button, IconButton } from "react-native-paper";
-import React, { useEffect, useState } from 'react'
-import { auth, db } from '../firebaseConfig';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
-import { useNavigation } from '@react-navigation/native';
-import { SvgXml } from 'react-native-svg';
-import styles from '../styles/Achievements.styles';
+import React, { useEffect, useState } from "react";
+import { auth, db } from "../firebaseConfig";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
+import styles from "../styles/Achievements.styles";
 
 const MyAchievements = () => {
   const [userData, setUserData] = useState(null);
   const [achievements, setAchievements] = useState([]);
+  const [loading, setLoading] = useState(true); // Added loading state
 
   const navigation = useNavigation();
 
@@ -36,20 +43,26 @@ const MyAchievements = () => {
   useEffect(() => {
     if (userData) {
       const getAchievements = async () => {
-        const q = query(
-          collection(db, "usersCompletedRaces"),
-          where("uid", "==", userData.uid)
-        );
+        setLoading(true);
+        try {
+          const q = query(
+            collection(db, "usersCompletedRaces"),
+            where("uid", "==", userData.uid)
+          );
 
-        const achievementsQuerySnapshot = await getDocs(q);
+          const achievementsQuerySnapshot = await getDocs(q);
 
-        const achievements = achievementsQuerySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
+          const achievements = achievementsQuerySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
 
-        setAchievements(achievements);
-
+          setAchievements(achievements);
+        } catch (error) {
+          console.error("Error fetching achievements:", error);
+        } finally {
+          setLoading(false);
+        }
       };
       getAchievements();
     }
@@ -66,22 +79,20 @@ const MyAchievements = () => {
 
   const handleBack = async () => {
     try {
-        navigation.goBack();
+      navigation.goBack();
     } catch (error) {
-        Alert.alert("Failed to go back")
+      Alert.alert("Failed to go back");
     }
   };
 
-  const renderAchievement = (achievements) => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.itemText}>{achievements.raceName}</Text>
-        <Text>{achievements.raceDistance}</Text>
-        <Text>{achievements.finishTime}</Text>
-        <Text>{achievements.raceDate}</Text>
-      </View>
-    );
-  };
+  const renderAchievement = (achievements) => (
+    <View style={styles.item}>
+      <Text style={styles.itemText}>{achievements.raceName}</Text>
+      <Text>{achievements.raceDistance}</Text>
+      <Text>{achievements.finishTime}</Text>
+      <Text>{achievements.raceDate}</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -97,19 +108,32 @@ const MyAchievements = () => {
         </Text>
       </View>
 
-      <ScrollView>
-        {achievements.map((item) => (
-          <Card key={item.id} mode="contained" style={styles.card}>
-            <Card.Content>{renderAchievement(item)} </Card.Content>
-          </Card>
-        ))}
-      </ScrollView>
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#322eb8"
+          style={{ marginTop: 20 }}
+        />
+      ) : (
+        <ScrollView>
+          {achievements.length > 0 ? (
+            achievements.map((item) => (
+              <Card key={item.id} mode="contained" style={styles.card}>
+                <Card.Content>{renderAchievement(item)} </Card.Content>
+              </Card>
+            ))
+          ) : (
+            <Text style={styles.noAchievementsText}>No achievements found</Text>
+          )}
+        </ScrollView>
+      )}
+
       <Button
         mode="contained"
         onPress={handleLogout}
         style={styles.logoutButton}
       >
-        Logout
+        <Text style={styles.logoutText}>Logout</Text>
       </Button>
     </View>
   );

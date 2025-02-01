@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   logoutText: {
-    color: "#000",
+    color: "#ffff",
     fontWeight: "500",
     fontSize: 16,
   },

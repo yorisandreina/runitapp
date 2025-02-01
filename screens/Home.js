@@ -176,7 +176,10 @@ const Home = () => {
             <Button
               mode="text"
               textColor="black"
-              onPress={() => navigation.navigate("MyAchievements")}
+              onPress={() => {
+                setIsResetModalVisible(false);
+                navigation.navigate("MyAchievements");
+              }}
             >
               My Achievements
             </Button>
