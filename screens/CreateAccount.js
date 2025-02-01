@@ -26,6 +26,10 @@ const CreateAccount = () => {
   };
 
   const handleSignUp = async () => {
+    if (password.length < 6) {
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -90,6 +94,7 @@ const CreateAccount = () => {
         style={styles.input}
         outlineColor="#c9c9c9"
       />
+      <Text style={styles.password}>*Password must be at least 6 characters long.</Text>
       <Button
         mode="contained"
         onPress={handleSignUp}
@@ -100,7 +105,7 @@ const CreateAccount = () => {
         disabled={!isFormValid()}
         labelStyle={styles.buttonText}
       >
-        Sign Up
+        Create account
       </Button>
       <Button
         mode="contained"

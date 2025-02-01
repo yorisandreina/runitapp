@@ -38,11 +38,14 @@ const styles = StyleSheet.create({
     color: "#322EB0",
     textAlign: "center",
     fontSize: 16,
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
   },
   logo: {
     width: 100,
     height: 100,
+  },
+  password: {
+    color: "rgba(135, 135, 135, 0.8)",
   },
 });
 
