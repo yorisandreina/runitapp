@@ -8,16 +8,14 @@ const useCurrentUser = () => {
   const auth = getAuth(app); 
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+    const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
+      if (user && user.uid !== currentUser?.uid) {
         setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
       }
     });
 
     return () => unsubscribe();
-  }, [auth]);
+  }, [currentUser]);
 
   return currentUser;
 };
