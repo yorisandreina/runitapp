@@ -58,6 +58,7 @@ const Login = () => {
         mode="outlined"
         style={styles.input}
         outlineColor="#c9c9c9"
+        testID="email-input"
       />
       <TextInput
         label="Password"
@@ -68,6 +69,7 @@ const Login = () => {
         mode="outlined"
         style={styles.input}
         outlineColor="#c9c9c9"
+        testID="password-input"
       />
       <Button
         mode="contained"

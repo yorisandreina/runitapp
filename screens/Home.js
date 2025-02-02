@@ -213,7 +213,7 @@ const Home = () => {
     <PaperProvider>
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#322eb8" />
+          <ActivityIndicator size="large" color="#322eb8" testID="loading-indicator" />
         </View>
       ) : (
         <View style={styles.container}>

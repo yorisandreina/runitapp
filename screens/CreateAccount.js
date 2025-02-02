@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   View,
-  TouchableOpacity,
   Alert,
 } from "react-native";
 import {
@@ -73,6 +72,7 @@ const CreateAccount = () => {
         mode="outlined"
         style={styles.input}
         outlineColor="#c9c9c9"
+        testID="name-input"
       />
       <TextInput
         label="Email"
@@ -83,6 +83,7 @@ const CreateAccount = () => {
         mode="outlined"
         style={styles.input}
         outlineColor="#c9c9c9"
+        testID="email-input"
       />
       <TextInput
         label="Password"
@@ -93,8 +94,11 @@ const CreateAccount = () => {
         mode="outlined"
         style={styles.input}
         outlineColor="#c9c9c9"
+        testID="password-input"
       />
-      <Text style={styles.password}>*Password must be at least 6 characters long.</Text>
+      <Text style={styles.password}>
+        *Password must be at least 6 characters long.
+      </Text>
       <Button
         mode="contained"
         onPress={handleSignUp}
