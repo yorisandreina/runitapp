@@ -1,25 +1,21 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import Home from "../screens/Home";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  screen,
+} from "@testing-library/react-native";
 import { signOut } from "firebase/auth";
-import { addDoc, getDoc, onSnapshot } from "firebase/firestore";
+import { addDoc, getDoc } from "firebase/firestore";
 import { NavigationContainer } from "@react-navigation/native";
+import Home from "../screens/Home";
 
-// Mock Firestore
-jest.mock("firebase/firestore", () => ({
-  getFirestore: jest.fn(() => ({
-    collection: jest.fn(),
-    getDoc: jest.fn(),
-    onSnapshot: jest.fn(),
-    addDoc: jest.fn(),
-    query: jest.fn(),
-    where: jest.fn(),
-    doc: jest.fn(),
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: jest.fn(() => ({
+    addListener: jest.fn(),
   })),
-  // You can add other Firestore-related methods if used elsewhere in your code
 }));
 
-// Mock Firebase auth methods
 jest.mock("firebase/auth", () => ({
   signOut: jest.fn(),
   getAuth: jest.fn().mockReturnValue({
@@ -29,16 +25,11 @@ jest.mock("firebase/auth", () => ({
 
 describe("Home component", () => {
   beforeEach(() => {
-    // Reset mocks before each test
     jest.clearAllMocks();
   });
 
   it("renders loading indicator initially", () => {
-    const { getByTestId } = render(
-      <NavigationContainer>
-        <Home />
-      </NavigationContainer>
-    );
+    const { getByTestId } = render(<Home />);
     const loadingIndicator = getByTestId("loading-indicator");
     expect(loadingIndicator).toBeTruthy();
   });
@@ -46,10 +37,20 @@ describe("Home component", () => {
   it("calls signOut when the logout button is pressed", async () => {
     signOut.mockResolvedValueOnce();
 
-    render(<Home />)
+    const { getByRole, getByTestId } = render(<Home />);
 
-    fireEvent.press(screen.getByRole("button", { name: "Logout" }));
+    // Wait for the IconButton to be available
+    await waitFor(() => getByTestId("menu-button"));
 
+    // Simulate clicking the IconButton
+    const iconButton = getByTestId("menu-button");
+    fireEvent.press(iconButton);
+
+    // Now simulate clicking the Logout Button inside the modal
+    const logoutButton = getByRole("button", { name: "Logout" });
+    fireEvent.press(logoutButton);
+
+    // Ensure signOut was called once
     await waitFor(() => expect(signOut).toHaveBeenCalledTimes(1));
   });
 
@@ -59,22 +60,30 @@ describe("Home component", () => {
       raceDate: new Date(),
       raceName: "Half Marathon",
     };
+
+    // Mock Firestore behavior
     getDoc.mockResolvedValueOnce({
       exists: () => true,
       data: () => mockUserData,
     });
     addDoc.mockResolvedValueOnce({});
 
-    const { getByTestId, getByLabelText } = render(<Home />);
+    render(
+      <NavigationContainer>
+        <Home />
+      </NavigationContainer>
+    );
 
     // Open "Mark as Completed" modal
-    const markAsCompletedButton = getByTestId("mark-as-completed-button");
+    const markAsCompletedButton = screen.getByTestId(
+      "mark-as-completed-button"
+    );
     fireEvent.press(markAsCompletedButton);
 
-    const finishTimeInput = getByLabelText("Finish Time");
+    const finishTimeInput = screen.getByLabelText("Finish Time");
     fireEvent.changeText(finishTimeInput, "01:45:00");
 
-    const saveButton = getByTestId("save-button");
+    const saveButton = screen.getByTestId("save-button");
     fireEvent.press(saveButton);
 
     // Ensure addDoc is called
@@ -90,12 +99,12 @@ describe("Home component", () => {
   });
 
   it("displays the reset modal when the reset button is pressed", async () => {
-    const { getByTestId, findByText } = render(<Home />);
+    render(<Home />);
 
-    const resetButton = getByTestId("settings-button");
+    const resetButton = screen.getByTestId("menu-button");
     fireEvent.press(resetButton);
 
-    const myAchievementsButton = await findByText("My Achievements");
+    const myAchievementsButton = await screen.findByText("My Achievements");
     expect(myAchievementsButton).toBeTruthy();
   });
 });

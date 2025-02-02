@@ -1,23 +1,13 @@
 import {
   render,
-  fireEvent,
   screen,
-  waitFor,
 } from "@testing-library/react-native";
+
 import React from "react";
 import RaceDetails from "../screens/RaceDetails";
 
 jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(),
-}));
-
-jest.mock("firebase/auth", () => ({
-  getAuth: jest.fn(() => ({ currentUser: null })),
-  onAuthStateChanged: jest.fn(),
-  onAuthStateChanged: jest.fn((auth, callback) => {
-    callback({ uid: "123", email: "test@example.com" });
-    return jest.fn();
-  }),
 }));
 
 jest.mock("expo-font", () => ({

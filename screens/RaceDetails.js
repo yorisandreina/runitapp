@@ -124,6 +124,7 @@ const RaceDetails = () => {
             mode="outlined"
             style={styles.input}
             outlineColor="#c9c9c9"
+            testID="race-name-input"
           />
           <Text style={styles.subtitle}>Race date</Text>
           <View style={styles.dateSelectContainer}>

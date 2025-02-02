@@ -253,6 +253,7 @@ const Home = () => {
               color="#0000"
               onPress={() => setIsResetModalVisible(true)}
               style={styles.settingsButton}
+              testID="menu-button"
             >
             </IconButton>
             <Button
