@@ -19,6 +19,7 @@ import useCurrentUser from "../utils/UserData";
 import { Picker } from "@react-native-picker/picker";
 import styles from "../styles/RaceDetails.styles";
 import { TextInput, Button, Text, Icon, ActivityIndicator } from "react-native-paper";
+import { useSaveRace } from "../utils/UserSave";
 
 const RaceDetails = () => {
   const [raceName, setRaceName] = useState("");
@@ -34,46 +35,31 @@ const RaceDetails = () => {
   const navigation = useNavigation();
 
   const handleSave = async () => {
-    if (!currentUser) {
-      return;
-    }
+    const { saveRace } = useSaveRace(db);
+    
+    if (!currentUser) return;
 
     setLoading(true);
-
     try {
-    const userRef = query(
-      collection(db, "users"),
-      where("uid", "==", currentUser.uid)
-    );
+      const result = await saveRace(currentUser, {
+        raceName,
+        raceDate: formattedDate,
+        raceDistance: distance,
+        racePace: `${minutes}:${seconds}`,
+      });
 
-    const querySnapshot = await getDocs(userRef);
-
-    if (!querySnapshot.empty) {
-      const docId = querySnapshot.docs[0].id;
-      const userDocRef = doc(db, "users", docId);
-
-      await setDoc(
-        userDocRef,
-        {
-          raceName: raceName,
-          raceDate: formattedDate,
-          raceDistance: distance,
-          racePace: `${minutes}:${seconds}`,
-        },
-        { merge: true }
-      );
-
-      navigation.navigate("Home");
-      Alert.alert("Info saved successfully");
-    } else {
-      Alert.alert("No user found with this uid.");
-    }
+      if (result === "success") {
+        navigation.navigate("Home");
+        Alert.alert("Info saved successfully");
+      } else {
+        Alert.alert("No user found with this uid.");
+      }
     } catch (error) {
       Alert.alert("Error saving data", error.message);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   const isFormValid = () => {
     return raceName.trim() !== "" && minutes !== "00" && seconds !== "00";
@@ -150,6 +136,7 @@ const RaceDetails = () => {
               <Picker
                 selectedValue={distance}
                 onValueChange={handleDistanceChange}
+                testID="distance-picker"
               >
                 <Picker.Item label="5km" value="5km" />
                 <Picker.Item label="10km" value="10km" />
