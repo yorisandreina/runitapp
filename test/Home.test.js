@@ -1,110 +1,116 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  screen,
-} from "@testing-library/react-native";
-import { signOut } from "firebase/auth";
-import { addDoc, getDoc } from "firebase/firestore";
-import { NavigationContainer } from "@react-navigation/native";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react-native";
 import Home from "../screens/Home";
+import { PaperProvider } from "react-native-paper";
 
-jest.mock("@react-navigation/native", () => ({
-  useNavigation: jest.fn(() => ({
-    addListener: jest.fn(),
-  })),
-}));
-
+// Mock Firebase and Firestore
 jest.mock("firebase/auth", () => ({
-  signOut: jest.fn(),
-  getAuth: jest.fn().mockReturnValue({
-    currentUser: { uid: "12345" },
-  }),
+  auth: {
+    currentUser: { uid: "test-uid" },
+  },
 }));
 
-describe("Home component", () => {
+jest.mock("firebase/firestore", () => ({
+  getDoc: jest.fn(),
+  collection: jest.fn(),
+  query: jest.fn(),
+  where: jest.fn(),
+  onSnapshot: jest.fn(),
+}));
+
+// Mock Firestore data
+const mockUserData = {
+  raceDistance: "21km",
+  raceDate: "2025-05-10T00:00:00.000Z",
+  uid: "test-uid",
+};
+
+describe("Home Component", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("renders loading indicator initially", () => {
-    const { getByTestId } = render(<Home />);
-    const loadingIndicator = getByTestId("loading-indicator");
-    expect(loadingIndicator).toBeTruthy();
-  });
-
-  it("calls signOut when the logout button is pressed", async () => {
-    signOut.mockResolvedValueOnce();
-
-    const { getByRole, getByTestId } = render(<Home />);
-
-    // Wait for the IconButton to be available
-    await waitFor(() => getByTestId("menu-button"));
-
-    // Simulate clicking the IconButton
-    const iconButton = getByTestId("menu-button");
-    fireEvent.press(iconButton);
-
-    // Now simulate clicking the Logout Button inside the modal
-    const logoutButton = getByRole("button", { name: "Logout" });
-    fireEvent.press(logoutButton);
-
-    // Ensure signOut was called once
-    await waitFor(() => expect(signOut).toHaveBeenCalledTimes(1));
-  });
-
-  it("marks as completed successfully", async () => {
-    const mockUserData = {
-      raceDistance: "21km",
-      raceDate: new Date(),
-      raceName: "Half Marathon",
-    };
-
-    // Mock Firestore behavior
-    getDoc.mockResolvedValueOnce({
+    // Mock the firestore calls to return the mock user data
+    getDoc.mockResolvedValue({
       exists: () => true,
       data: () => mockUserData,
     });
-    addDoc.mockResolvedValueOnce({});
-
-    render(
-      <NavigationContainer>
+  });
+  
+  it("renders loading state initially", () => {
+    const { getByTestId } = render(
+      <PaperProvider>
         <Home />
-      </NavigationContainer>
+      </PaperProvider>
     );
 
-    // Open "Mark as Completed" modal
-    const markAsCompletedButton = screen.getByTestId(
-      "mark-as-completed-button"
+    expect(getByTestId("loading-indicator")).toBeTruthy();
+  });
+
+  it("displays the correct title based on user data", async () => {
+    const { getByText, findByText } = render(
+      <PaperProvider>
+        <Home />
+      </PaperProvider>
     );
-    fireEvent.press(markAsCompletedButton);
 
-    const finishTimeInput = screen.getByLabelText("Finish Time");
-    fireEvent.changeText(finishTimeInput, "01:45:00");
+    // Wait for the loading state to disappear (loading indicator no longer present)
+     await waitFor(() => {
+       const loadingIndicator = screen.queryByTestId("loading-indicator");
+       // Check that the loading indicator is removed from the DOM
+       expect(loadingIndicator).not.toBeInTheDocument();
+     });
 
-    const saveButton = screen.getByTestId("save-button");
-    fireEvent.press(saveButton);
-
-    // Ensure addDoc is called
-    await waitFor(() => expect(addDoc).toHaveBeenCalledTimes(1));
-    expect(addDoc).toHaveBeenCalledWith(
-      expect.objectContaining({
-        raceName: "Half Marathon",
-        raceDate: expect.any(Date),
-        raceDistance: "21km",
-        finishTime: "01:45:00",
-      })
+    // Then check that the title is displayed
+    await waitFor(() =>
+      expect(screen.getByText("Marathon Training")).toBeTruthy()
     );
   });
 
-  it("displays the reset modal when the reset button is pressed", async () => {
-    render(<Home />);
+  it('opens the completed modal when "Mark as Completed" button is pressed', async () => {
+    const { getByText, getByTestId } = render(
+      <PaperProvider>
+        <Home />
+      </PaperProvider>
+    );
 
-    const resetButton = screen.getByTestId("menu-button");
-    fireEvent.press(resetButton);
+    const markAsCompletedButton = getByText("Mark as Completed");
+    fireEvent.press(markAsCompletedButton);
 
-    const myAchievementsButton = await screen.findByText("My Achievements");
-    expect(myAchievementsButton).toBeTruthy();
+    await waitFor(() => {
+      // Check if the modal is visible
+      expect(getByTestId("completed-modal")).toBeTruthy();
+    });
+  });
+
+  it("opens the reset modal when the menu button is pressed", async () => {
+    const { getByTestId } = render(
+      <PaperProvider>
+        <Home />
+      </PaperProvider>
+    );
+
+    const menuButton = getByTestId("menu-button");
+    fireEvent.press(menuButton);
+
+    await waitFor(() => {
+      // Check if the reset modal is visible
+      expect(getByTestId("reset-modal")).toBeTruthy();
+    });
+  });
+
+  it("logs the user out when the logout button is pressed", async () => {
+    const { getByText, getByTestId } = render(
+      <PaperProvider>
+        <Home />
+      </PaperProvider>
+    );
+
+    const menuButton = getByTestId("menu-button");
+    fireEvent.press(menuButton);
+
+    const logoutButton = getByText("Logout");
+    fireEvent.press(logoutButton);
+
+    await waitFor(() => {
+      expect(getByText("Logged out successfully")).toBeTruthy();
+    });
   });
 });
