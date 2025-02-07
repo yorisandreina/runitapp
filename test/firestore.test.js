@@ -1,37 +1,57 @@
-import { initializeTestApp, clearFirestoreData } from "@firebase/testing";
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import admin from "firebase-admin";
+import {
+  initializeTestEnvironment,
+  assertSucceeds,
+} from "@firebase/rules-unit-testing";
+import * as path from "path";
 
-const projectId = "your-project-id";
+// Initialize Firebase Admin SDK
+if (admin.apps.length === 0) {
+    const serviceAccountPath = path.resolve(
+      __dirname,
+      "../credentials/ServiceAccount.json"
+    );
+    
+    admin.initializeApp({ credential: admin.credential.cert(serviceAccountPath), projectId: "runit-8e5c8" });
+}
 
-beforeEach(async () => {
-  // Initialize the Firebase app for testing
-  const app = await initializeTestApp({
-    projectId,
-    auth: { uid: "test-user" },
+let testEnv;
+
+beforeAll(async () => {
+  // Initialize Firebase Test Environment
+  testEnv = await initializeTestEnvironment({
+    projectId: "runit-8e5c8",
+    firestore: {
+      host: "127.0.0.1",
+      port: 8080,
+    },
   });
-  const db = getFirestore(app);
-
-  // Connect to the Firestore emulator
-  connectFirestoreEmulator(db, "localhost", 8080);
 });
 
-afterEach(async () => {
-  // Clear Firestore data after each test
-  await clearFirestoreData({ projectId });
+afterAll(async () => {
+  // Cleanup the test environment
+  await testEnv.cleanup();
 });
 
-test("add a document to Firestore", async () => {
-  const db = getFirestore();
-  const testCollection = collection(db, "test-collection");
+test("should add a document to Firestore", async () => {
+  const db = admin.firestore();
 
-  // Add a document
-  await addDoc(testCollection, { name: "Test Document" });
+  // Arrange
+  const docRef = db.collection("users").doc("user_123");
 
-  // Fetch documents
-  const querySnapshot = await getDocs(testCollection);
-  const documents = querySnapshot.docs.map((doc) => doc.data());
+  const userData = {
+    name: "John Doe",
+    email: "john.doe@example.com",
+    uid: "test-uid",
+  };
+  
+  // Act
+  await assertSucceeds(docRef.set(userData));
+
+  const doc = await docRef.get();
+  const data = doc.data();
 
   // Assert
-  expect(documents).toHaveLength(1);
-  expect(documents[0].name).toBe("Test Document");
+  expect(doc.exists).toBe(true);
+  expect(data).toEqual(userData);
 });
