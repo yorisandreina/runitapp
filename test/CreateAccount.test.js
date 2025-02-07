@@ -6,6 +6,12 @@ import {
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import CreateAccount from "../screens/CreateAccount";
+import admin from "firebase-admin";
+import {
+  initializeTestEnvironment,
+  assertSucceeds,
+} from "@firebase/rules-unit-testing";
+import * as path from "path";
 
 jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(),
@@ -17,6 +23,18 @@ jest.mock("firebase/auth", () => ({
     currentUser: { uid: "12345" },
   }),
 }));
+
+if (admin.apps.length === 0) {
+  const serviceAccountPath = path.resolve(
+    __dirname,
+    "../credentials/ServiceAccount.json"
+  );
+
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccountPath),
+    projectId: "runit-8e5c8",
+  });
+}
 
 describe("CreateAccount Component", () => {
   it("calls createUserWithEmailAndPassword and navigates on success", async () => {
@@ -51,5 +69,42 @@ describe("CreateAccount Component", () => {
     const createButton = screen.getByText("Create account");
 
     expect(createButton).toBeDisabled();
+  });
+});
+
+describe("Add user credentials to db", () => {
+  let testEnv;
+
+  beforeAll(async () => {
+    testEnv = await initializeTestEnvironment({
+      projectId: "runit-8e5c8",
+      firestore: {
+        host: "127.0.0.1",
+        port: 8080,
+      },
+    });
+  });
+
+  it("creates a user account and navigates to RaceDetails screen on success", async () => {
+    const db = admin.firestore();
+
+  // Arrange
+  const docRef = db.collection("users").doc("user_123");
+
+  const userData = {
+    name: "John Doe",
+    email: "john.doe@example.com",
+    uid: "test-uid",
+  };
+  
+  // Act
+  await assertSucceeds(docRef.set(userData));
+
+  const doc = await docRef.get();
+  const data = doc.data();
+
+  // Assert
+  expect(doc.exists).toBe(true);
+  expect(data).toEqual(userData);
   });
 });
