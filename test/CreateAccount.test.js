@@ -18,30 +18,21 @@ jest.mock("firebase/auth", () => ({
   }),
 }));
 
-// if (admin.apps.length === 0) {
-//   const serviceAccountPath = path.resolve(
-//     __dirname,
-//     "../credentials/ServiceAccount.json"
-//   );
-
-//   admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccountPath),
-//     projectId: "runit-8e5c8",
-//   });
-// }
-
 describe("CreateAccount Component", () => {
   it("calls createUserWithEmailAndPassword and navigates on success", async () => {
+    // Arrange
     const mockNavigate = jest.fn();
     useNavigation.mockReturnValue({ navigate: mockNavigate });
 
     render(<CreateAccount />);
 
+    // Act
     fireEvent.changeText(screen.getByTestId("name-input"), "John Doe");
     fireEvent.changeText(screen.getByTestId("email-input"), "test@example.com");
     fireEvent.changeText(screen.getByTestId("password-input"), "password123");
     fireEvent.press(screen.getByRole("button", { name: "Create account"}));
 
+    // Assert
     expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
       expect.any(Object),
       "test@example.com",
@@ -50,55 +41,27 @@ describe("CreateAccount Component", () => {
   });
 
   it("navigates to Login on button press", () => {
+    // Arrange
     const mockNavigate = jest.fn();
     useNavigation.mockReturnValue({ navigate: mockNavigate });
 
     render(<CreateAccount />);
+
+    // Act
     fireEvent.press(screen.getByRole("button", { name: "Back to Login" }));
+
+    // Assert
     expect(mockNavigate).toHaveBeenCalledWith("Login");
   });
 
   it("disables the button when form is incomplete", () => {
+    // Arrange
     render(<CreateAccount />);
+
+    // Act
     const createButton = screen.getByText("Create account");
 
+    // Assert
     expect(createButton).toBeDisabled();
   });
 });
-
-// describe("Add user credentials to db", () => {
-//   let testEnv;
-
-//   beforeAll(async () => {
-//     testEnv = await initializeTestEnvironment({
-//       projectId: "runit-8e5c8",
-//       firestore: {
-//         host: "127.0.0.1",
-//         port: 8080,
-//       },
-//     });
-//   });
-
-//   it("creates a user account and navigates to RaceDetails screen on success", async () => {
-//     const db = admin.firestore();
-
-//   // Arrange
-//   const docRef = db.collection("users").doc("user_123");
-
-//   const userData = {
-//     name: "John Doe",
-//     email: "john.doe@example.com",
-//     uid: "test-uid",
-//   };
-  
-//   // Act
-//   await assertSucceeds(docRef.set(userData));
-
-//   const doc = await docRef.get();
-//   const data = doc.data();
-
-//   // Assert
-//   expect(doc.exists).toBe(true);
-//   expect(data).toEqual(userData);
-//   });
-// });

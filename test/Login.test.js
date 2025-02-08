@@ -17,22 +17,12 @@ jest.mock("firebase/auth", () => ({
   ),
 }));
 
-// if (admin.apps.length === 0) {
-//   const serviceAccountPath = path.resolve(
-//     __dirname,
-//     "../credentials/ServiceAccount.json"
-//   );
-
-//   admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccountPath),
-//     projectId: "runit-8e5c8",
-//   });
-// }
-
 describe("Login Component", () => {
   it("renders input fields and buttons", () => {
+    // Arrange
     render(<Login />);
 
+    // Assert
     expect(screen.getByTestId("email-input")).toBeTruthy();
     expect(screen.getByTestId("password-input")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Login" })).toBeTruthy();
@@ -40,51 +30,47 @@ describe("Login Component", () => {
   });
 
   it("disables login button when fields are empty", () => {
+    // Arrange
     render(<Login />);
+
+    // Act
     const loginButton = screen.getByRole("button", { name: "Login" });
+
+    // Assert
     expect(loginButton).toBeDisabled();
   });
 
   it("enables login button when fields are filled", () => {
+    // Arrange
     render(<Login />);
+
+    // Act
     fireEvent.changeText(screen.getByTestId("email-input"), "test@example.com");
     fireEvent.changeText(screen.getByTestId("password-input"), "password123");
 
     const loginButton = screen.getByRole("button", { name: "Login" });
+
+    // Assert
     expect(loginButton).not.toBeDisabled();
   });
 
   it("navigates to Create Account on button press", () => {
+    // Arrange
     const mockNavigate = jest.fn();
     useNavigation.mockReturnValue({ navigate: mockNavigate });
 
     render(<Login />);
+
+    // Act
     fireEvent.press(screen.getByRole("button", { name: "Create Account" }));
+
+    // Assert
     expect(mockNavigate).toHaveBeenCalledWith("CreateAccount");
   });
 });
 
 describe("Login to app using Firestore", () => {
-  // let testEnv;
-
-  // beforeAll(async () => {
-  //   testEnv = await initializeTestEnvironment({
-  //     projectId: "runit-8e5c8",
-  //     firestore: {
-  //       host: "127.0.0.1",
-  //       port: 8080,
-  //     },
-  //   });
-
-  //   await testEnv.clearFirestore();
-  // });
-
-  // afterAll(async () => {
-  //   await testEnv.cleanup();
-  // });
-
   it("logs in and writes user data to Firestore", async () => {
-    // const db = admin.firestore();
 
     // Arrange
     render(<Login />);
@@ -102,17 +88,5 @@ describe("Login to app using Firestore", () => {
       "password123",
       { persistence: "SESSION" }
     );
-
-    // const docRef = db.collection("users").doc("test-uid");
-
-    // await assertSucceeds(
-    //   docRef.set({ name: "John Doe", email: "john.doe@example.com", uid: "test-uid" })
-    // );
-
-    // const doc = await docRef.get();
-    // const data = doc.data();
-
-    // expect(doc.exists).toBe(true);
-    // expect(data.email).toBe("john.doe@example.com");
   });
 });
