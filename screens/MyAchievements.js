@@ -3,8 +3,8 @@ import { Text, Card, Button, IconButton } from "react-native-paper";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../styles/Achievements.styles";
-import useFetchUserData from "../utils/FetchUserData";
-import useFetchAchievements from "../utils/FetchAchievements";
+import useFetchUserData from "../hooks/FetchUserData";
+import useFetchAchievements from "../hooks/FetchAchievements";
 
 const MyAchievements = () => {
   const navigation = useNavigation();

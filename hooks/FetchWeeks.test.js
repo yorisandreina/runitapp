@@ -47,8 +47,7 @@ describe("useFetchWeeks", () => {
       useFetchWeeks(mockUserData)
     );
 
-    await act(async () => {
-    });
+    await act(async () => {});
 
     // Assert
     expect(result.current.trainingType).toBe("Half Marathon Training");

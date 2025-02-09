@@ -23,12 +23,12 @@ jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(),
 }));
 
-jest.mock("../utils/FetchUserData", () =>
+jest.mock("../hooks/FetchUserData", () =>
   jest.fn(() => ({
     userData: { name: "John Doe" },
   }))
 );
-jest.mock("../utils/FetchWeeks", () =>
+jest.mock("../hooks/FetchWeeks", () =>
   jest.fn(() => ({
     weeks: [
       { id: "1", name: "Week 1" },

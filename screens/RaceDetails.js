@@ -15,11 +15,11 @@ import {
   where,
 } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
-import useCurrentUser from "../utils/UserData";
+import useCurrentUser from "../hooks/UserData";
 import { Picker } from "@react-native-picker/picker";
 import styles from "../styles/RaceDetails.styles";
 import { TextInput, Button, Text, Icon, ActivityIndicator } from "react-native-paper";
-import { useSaveRace } from "../utils/UserSave";
+import { useSaveRace } from "../hooks/UserSave";
 
 const RaceDetails = () => {
   const [raceName, setRaceName] = useState("");

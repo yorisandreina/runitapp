@@ -10,8 +10,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
-import useFetchUserData from "../utils/FetchUserData";
-import useFetchWeeks from "../utils/FetchWeeks";
+import useFetchUserData from "../hooks/FetchUserData";
+import useFetchWeeks from "../hooks/FetchWeeks";
 import TrainingCard from "../components/TrainingCard";
 import CompletedModal from "../modals/CompletedModal";
 import ResetModal from "../modals/ResetModal";
