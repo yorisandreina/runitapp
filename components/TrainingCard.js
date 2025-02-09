@@ -21,7 +21,7 @@ const TrainingCard = ({ item, weeksUntilRace }) => {
       activeOpacity={0.8}
     >
       <Card style={styles.card} testID={`training-card-${item.id}`}>
-        <Card.Content style={cardContent}>
+        <Card.Content style={cardContent} testID={`card-content-${item.id}`}>
           <Text style={textStyle}>{item.week}</Text>
           <Icon source="arrow-right" color="#322eb8" size={22} />
         </Card.Content>
