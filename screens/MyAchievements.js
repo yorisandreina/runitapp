@@ -41,7 +41,7 @@ const MyAchievements = () => {
     <View style={styles.container}>
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#322eb8" />
+          <ActivityIndicator size="large" color="#322eb8" testID="loading-indicator" />
         </View>
       ) : (
         <>
@@ -51,6 +51,7 @@ const MyAchievements = () => {
               size={24}
               onPress={handleBack}
               iconColor="#322eb8"
+              testID="back-button"
             />
             <Text variant="titleLarge" style={styles.title}>
               My Achievements

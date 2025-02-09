@@ -1,6 +1,6 @@
 import React from "react";
 import { View, ScrollView, Alert } from "react-native";
-import { Text, Card, ActivityIndicator, IconButton } from "react-native-paper";
+import { Text, IconButton } from "react-native-paper";
 import useFetchWorkouts from "../hooks/FetchWorkouts";
 import useFetchRacePace from "../hooks/FetchRacePace";
 import { paceIntervals, paceTempo, paceLongRun } from "../hooks/workouts/Pacing";
@@ -70,6 +70,7 @@ const Workouts = ({ route }) => {
           size={24}
           onPress={handleBack}
           iconColor="#322eb8"
+          testID="back-button"
         />
         <Text style={styles.title}>Week {selectedWeek}</Text>
       </View>
