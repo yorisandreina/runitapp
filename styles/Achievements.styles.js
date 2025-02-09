@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 25,
     backgroundColor: "#f2f2f2",
-    borderRadius: 20,
+    borderRadius: 8,
   },
   itemText: {
     fontSize: 16,
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
   logoutButton: {
     alignItems: "center",
     backgroundColor: "#322eb8",
-    padding: 5,
     borderRadius: 10,
+    margin: 15,
   },
   logoutText: {
     color: "#ffff",

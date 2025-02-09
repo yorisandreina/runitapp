@@ -31,7 +31,7 @@ const Workouts = ({ route }) => {
           {item.intervals.repeats[index]}x{distance}
         </Text>
         <Text style={styles.taskTextTempo}>
-          @ {paceIntervals(racePace, distance)}
+          @{paceIntervals(racePace, distance)}
         </Text>
         <Text style={styles.taskTextTempo}>RI: {item.intervals.RI[index]}</Text>
       </View>
@@ -44,7 +44,7 @@ const Workouts = ({ route }) => {
         <Text style={styles.taskTextTempo}>{distance}km</Text>
         {item.tempo.pace[index] !== "easy" ? (
           <Text style={styles.taskTextTempo}>
-            @ {paceTempo(racePace, distance)}
+            @{paceTempo(racePace, distance)}
           </Text>
         ) : (
           <Text style={styles.taskTextTempo}>easy</Text>
@@ -57,7 +57,7 @@ const Workouts = ({ route }) => {
     <View style={styles.taskItemTempo}>
       <Text style={styles.taskTextTempo}>{item.longRun.distance}km</Text>
       <Text style={styles.taskTextTempo}>
-        @ {paceLongRun(racePace, item.longRun.distance)}
+        @{paceLongRun(racePace, item.longRun.distance)}
       </Text>
     </View>
   );

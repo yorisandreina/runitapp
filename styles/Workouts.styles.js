@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#f2f2f2",
     padding: 15,
-    borderRadius: 20,
+    borderRadius: 8,
     marginVertical: 10,
   },
   taskText: {
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   card: {
-    backgroundColor: "#ffff"
-  }
+    backgroundColor: "#ffff",
+  },
 });
 
 export default styles;

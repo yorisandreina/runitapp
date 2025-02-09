@@ -1,7 +1,5 @@
-// WorkoutCard.js
 import React from "react";
 import { Card, ActivityIndicator } from "react-native-paper";
-import { Text } from "react-native";
 import styles from "../styles/Workouts.styles";
 
 const WorkoutCard = ({ title, loading, workouts, renderItem }) => {
