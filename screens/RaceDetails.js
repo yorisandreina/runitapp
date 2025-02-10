@@ -6,14 +6,6 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { db } from "../firebaseConfig";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import useCurrentUser from "../hooks/UserData";
 import { Picker } from "@react-native-picker/picker";

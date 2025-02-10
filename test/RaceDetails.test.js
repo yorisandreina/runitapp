@@ -1,6 +1,7 @@
 import React from "react";
 import { render, fireEvent, } from "@testing-library/react-native";
 import RaceDetails from "../screens/RaceDetails";
+import { NavigationContainer } from "@react-navigation/native";
 
 jest.mock("expo-font", () => ({
   isLoaded: jest.fn().mockReturnValue(true),
@@ -10,7 +11,11 @@ jest.mock("expo-font", () => ({
 describe("RaceDetails Component", () => {
   it("renders correctly", () => {
     // Arrange
-    const { getByText, getByTestId } = render(<RaceDetails />);
+    const { getByText, getByTestId } = render(
+      <NavigationContainer>
+        <RaceDetails />
+      </NavigationContainer>
+    );
 
     // Assert
     expect(getByText("Enter your race details")).toBeTruthy();
@@ -22,7 +27,11 @@ describe("RaceDetails Component", () => {
 
   it("updates race name when input changes", () => {
     // Arrange
-    const { getByTestId } = render(<RaceDetails />);
+    const { getByTestId } = render(
+      <NavigationContainer>
+        <RaceDetails />
+      </NavigationContainer>
+    );
 
     // Act
     const raceNameInput = getByTestId("race-name-input");
