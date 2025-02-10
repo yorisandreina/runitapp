@@ -25,17 +25,26 @@ const Workouts = ({ route }) => {
   const renderItemIntervals = ({ item }) => {
     if (!item || !item.intervals) return null;
 
-    return item.intervals.distance.map((distance, index) => (
-      <View key={index} style={styles.taskItemTempo}>
-        <Text style={styles.taskTextTempo}>
-          {item.intervals.repeats[index]}x{distance}
-        </Text>
-        <Text style={styles.taskTextTempo}>
-          @{paceIntervals(racePace, distance)}
-        </Text>
-        <Text style={styles.taskTextTempo}>RI: {item.intervals.RI[index]}</Text>
+    const isArray = Array.isArray(item.intervals.distance);
+    const data = isArray ? item.intervals.distance : [item.intervals.distance];
+    const repeats = isArray ? item.intervals.repeats : [item.intervals.repeats];
+    const RI = isArray ? item.intervals.RI : [item.intervals.RI];
+
+    return (
+      <View>
+        {data.map((distanceItem, index) => (
+          <View key={index} style={styles.taskItemTempo}>
+            <Text style={styles.taskTextTempo}>
+              {repeats[index]}x{distanceItem}
+            </Text>
+            <Text style={styles.taskTextTempo}>
+              @ {paceIntervals(racePace, distanceItem)}
+            </Text>
+            <Text style={styles.taskTextTempo}>RI: {RI[index]}</Text>
+          </View>
+        ))}
       </View>
-    ));
+    );
   };
 
   const renderItemTempo = ({ item }) => {

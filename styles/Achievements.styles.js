@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#322eb8",
     borderRadius: 10,
     margin: 15,
+    padding: 5,
   },
   logoutText: {
     color: "#ffff",

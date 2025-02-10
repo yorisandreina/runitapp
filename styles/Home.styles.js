@@ -35,15 +35,15 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: "white",
     padding: 10,
-    marginHorizontal: 20,
-    borderRadius: 20,
+    marginHorizontal: 30,
+    borderRadius: 5,
     alignItems: "flex-start",
   },
   modalContainerCompleted: {
     backgroundColor: "white",
     padding: 25,
-    marginHorizontal: 20,
-    borderRadius: 20,
+    marginHorizontal: 30,
+    borderRadius: 5,
   },
   modalBox: {
     backgroundColor: "#ffff",
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "70%",
     backgroundColor: "#322eb8",
-    borderRadius: 10,
+    borderRadius: 5,
     borderWidth: 0,
   },
   markAsCompletedText: {
@@ -105,9 +105,10 @@ const styles = StyleSheet.create({
   },
   settingsButton: {
     backgroundColor: "#f2f2f2",
-    borderRadius: 10,
+    borderRadius: 5,
     width: "15%",
     borderWidth: 0,
+    padding: 5,
   },
   currentWeek: {
     flexDirection: "row",
@@ -151,8 +152,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   saveButton: {
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: "#322eb8",
+    padding: 5,
   },
   loadingContainer: {
     flex: 1,
