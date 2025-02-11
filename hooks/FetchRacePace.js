@@ -3,7 +3,6 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import useCurrentUser from "../hooks/UserData";
 
-
 /**
  * Custom hook to fetch the current user's race pace from Firestore.
  *

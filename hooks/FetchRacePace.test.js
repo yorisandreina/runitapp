@@ -1,7 +1,6 @@
 import { renderHook, act } from "@testing-library/react-native";
 import useFetchRacePace from "./FetchRacePace";
-import { db } from "../firebaseConfig";
-import { onSnapshot, doc } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 import useCurrentUser from "../hooks/UserData";
 
 jest.mock("firebase/firestore", () => ({

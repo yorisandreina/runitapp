@@ -5,7 +5,6 @@ import { db } from "../firebaseConfig";
 import useCurrentUser from "./UserData";
 import { useSaveRace } from "./UserSave";
 
-
 /**
  * Custom hook for managing and saving race data in a form.
  *

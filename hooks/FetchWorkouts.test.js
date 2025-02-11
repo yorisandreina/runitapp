@@ -1,6 +1,5 @@
 import { renderHook, act } from "@testing-library/react-native";
-import { onSnapshot, collection, query } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { onSnapshot } from "firebase/firestore";
 import useFetchWorkouts from "./FetchWorkouts";
 
 jest.mock("firebase/firestore", () => ({

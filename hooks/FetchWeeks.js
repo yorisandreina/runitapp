@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
-
 /**
  * Custom hook to fetch weekly training data based on user data.
  *

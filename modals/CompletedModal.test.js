@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import { PaperProvider } from "react-native-paper"; // Import PaperProvider
+import { PaperProvider } from "react-native-paper";
 import CompletedModal from "./CompletedModal";
 
-// Mock handleMarkAsCompleted function
 const mockHandleMarkAsCompleted = jest.fn();
 
 describe("CompletedModal", () => {
