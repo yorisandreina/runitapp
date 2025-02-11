@@ -6,7 +6,7 @@ import styles from "../styles/RaceDetails.styles";
 const PacePicker = ({ minutes, setMinutes, seconds, setSeconds }) => (
   <View style={styles.paceSelectContainer}>
     <View style={styles.paceSelect}>
-      <Picker selectedValue={minutes} onValueChange={setMinutes}>
+      <Picker selectedValue={minutes} onValueChange={setMinutes} testID="minutes-picker">
         {[...Array(60)].map((_, index) => (
           <Picker.Item
             key={index}
@@ -18,12 +18,12 @@ const PacePicker = ({ minutes, setMinutes, seconds, setSeconds }) => (
     </View>
     <Text>:</Text>
     <View style={styles.paceSelect}>
-      <Picker selectedValue={seconds} onValueChange={setSeconds}>
+      <Picker selectedValue={seconds} onValueChange={setSeconds} testID="seconds-picker">
         {[...Array(60)].map((_, index) => (
           <Picker.Item
             key={index}
             label={index.toString()}
-            value={index.toString().padStart(2, "0")}
+            value={index.toString().padStart(2, "00")}
           />
         ))}
       </Picker>

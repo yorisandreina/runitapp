@@ -27,10 +27,14 @@ const DatePicker = ({ date, showDatePicker, setShowDatePicker, setDate }) => {
           mode="date"
           display="default"
           onChange={handleDateChange}
+          testID="datetime-picker"
         />
       )}
 
-      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+      <TouchableOpacity
+        onPress={() => setShowDatePicker(true)}
+        testID="calendar-icon"
+      >
         <Icon source="calendar" color="#322eb8" size={22} />
       </TouchableOpacity>
     </View>
