@@ -8,7 +8,15 @@ import DistancePicker from "../components/DistancePicker";
 import PacePicker from "../components/PacePicker";
 import styles from "../styles/RaceDetails.styles";
 
+/**
+ * RaceDetails screen component where the user can input and save race details.
+ * The form includes fields for race name, date, distance, and goal pace.
+ */
 const RaceDetails = () => {
+  /**
+   * Custom hook to manage the form state for race details.
+   * @type {object} Contains race name, date, distance, pace details, loading state, and save handler.
+   */
   const {
     raceName,
     setRaceName,
@@ -26,6 +34,10 @@ const RaceDetails = () => {
     handleSave,
   } = useRaceForm();
 
+  /**
+   * Validates if the form is complete and ready to be saved.
+   * @returns {boolean} True if the form is valid, false otherwise.
+   */
   const isFormValid =
     raceName.trim() !== "" && minutes !== "00" && seconds !== "00";
 
@@ -47,6 +59,7 @@ const RaceDetails = () => {
             showDatePicker={showDatePicker}
             setShowDatePicker={setShowDatePicker}
             setDate={setDate}
+            testID="datetime-picker"
           />
           <Text style={styles.subtitle}>Race distance</Text>
           <DistancePicker

@@ -6,6 +6,10 @@ import styles from "../styles/Achievements.styles";
 import useFetchUserData from "../hooks/FetchUserData";
 import useFetchAchievements from "../hooks/FetchAchievements";
 
+/**
+ * MyAchievements screen component that displays a user's achievements.
+ * It shows a loading indicator while fetching data, and renders a list of achievements once loaded.
+ */
 const MyAchievements = () => {
   const navigation = useNavigation();
   const userData = useFetchUserData(navigation);
@@ -28,6 +32,11 @@ const MyAchievements = () => {
     }
   };
 
+  /**
+   * Renders an individual achievement item.
+   * @param {Object} achievement - The achievement object containing race data.
+   * @returns {JSX.Element} A view containing the achievement details.
+   */
   const renderAchievement = (achievement) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>{achievement.raceName}</Text>
@@ -41,7 +50,11 @@ const MyAchievements = () => {
     <View style={styles.container}>
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#322eb8" testID="loading-indicator" />
+          <ActivityIndicator
+            size="large"
+            color="#322eb8"
+            testID="loading-indicator"
+          />
         </View>
       ) : (
         <>

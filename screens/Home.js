@@ -17,6 +17,13 @@ import CompletedModal from "../modals/CompletedModal";
 import ResetModal from "../modals/ResetModal";
 import styles from "../styles/Home.styles";
 
+/**
+ * `Home` Screen
+ *
+ * This screen displays the user's training schedule, 
+ * allows them to mark workouts as completed, 
+ * and provides logout/reset options.
+ */
 const Home = () => {
   const navigation = useNavigation();
   const userData = useFetchUserData(navigation);
@@ -33,9 +40,14 @@ const Home = () => {
 
   return (
     <PaperProvider>
+      {/* Show loading indicator if weeks data is not yet loaded */}
       {!weeks.length ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#322eb8" testID="loading-indicator" />
+          <ActivityIndicator
+            size="large"
+            color="#322eb8"
+            testID="loading-indicator"
+          />
         </View>
       ) : (
         <View style={styles.container}>

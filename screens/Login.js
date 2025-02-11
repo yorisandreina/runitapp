@@ -5,6 +5,10 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../styles/Auth.styles";
 
+/**
+ * Login screen component for user authentication.
+ * Allows users to log in with email and password, or navigate to the account creation screen.
+ */
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,6 +17,10 @@ const Login = () => {
   const navigation = useNavigation();
   const authLogin = getAuth();
 
+  /**
+   * Validates if the login form is valid (both email and password are not empty).
+   * @returns {boolean} True if the form is valid, false otherwise.
+   */
   const isFormValid = () => email.trim() !== "" && password.trim() !== "";
 
   useEffect(() => {
@@ -23,6 +31,11 @@ const Login = () => {
     };
   }, []);
 
+  /**
+   * Handles user login by authenticating with Firebase using email and password.
+   * On successful login, navigates to the "Home" screen.
+   * Displays an alert on error.
+   */
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(authLogin, email, password, {

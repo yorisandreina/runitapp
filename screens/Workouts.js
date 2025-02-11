@@ -8,6 +8,10 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "../styles/Workouts.styles";
 import WorkoutCard from "../components/WorkoutCard";
 
+/**
+ * Workouts screen component that displays the week's workouts, including intervals, tempo, and long runs.
+ * The workouts are fetched from the server, and the pacing for each workout type is calculated based on the race pace.
+ */
 const Workouts = ({ route }) => {
   const { selectedWeek } = route.params;
   const { workouts, loading } = useFetchWorkouts(selectedWeek);
@@ -22,6 +26,11 @@ const Workouts = ({ route }) => {
     }
   };
 
+  /**
+   * Renders the intervals section for each workout item.
+   * @param {object} param0 Contains the workout item.
+   * @returns {JSX.Element} The rendered intervals section.
+   */
   const renderItemIntervals = ({ item }) => {
     if (!item || !item.intervals) return null;
 
@@ -47,6 +56,11 @@ const Workouts = ({ route }) => {
     );
   };
 
+  /**
+   * Renders the tempo section for each workout item.
+   * @param {object} param0 Contains the workout item.
+   * @returns {JSX.Element} The rendered tempo section.
+   */
   const renderItemTempo = ({ item }) => {
     return item.tempo.distance.map((distance, index) => (
       <View key={index} style={styles.taskItemTempo}>
@@ -62,6 +76,11 @@ const Workouts = ({ route }) => {
     ));
   };
 
+  /**
+   * Renders the long run section for each workout item.
+   * @param {object} param0 Contains the workout item.
+   * @returns {JSX.Element} The rendered long run section.
+   */
   const renderItemLongRun = ({ item }) => (
     <View style={styles.taskItemTempo}>
       <Text style={styles.taskTextTempo}>{item.longRun.distance}km</Text>

@@ -3,6 +3,19 @@ import { View } from "react-native";
 import { Modal, Portal, Button, Icon } from "react-native-paper";
 import styles from "../styles/Home.styles";
 
+/**
+ * `ResetModal` component for displaying user action options.
+ *
+ * This modal provides options for viewing achievements, resetting race details, and logging out.
+ *
+ * @param {Object} props - The component's props.
+ * @param {boolean} props.visible - Controls the visibility of the modal.
+ * @param {Function} props.onDismiss - Function to close the modal.
+ * @param {Object} props.navigation - React Navigation object for handling navigation.
+ * @param {Function} props.handleLogout - Function to handle user logout.
+ *
+ * @returns {JSX.Element} A modal with buttons for achievements, resetting marks, and logging out.
+ */
 const ResetModal = ({ visible, onDismiss, navigation, handleLogout }) => {
   return (
     <Portal>

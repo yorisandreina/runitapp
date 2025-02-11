@@ -13,6 +13,14 @@ import { setDoc, doc } from "firebase/firestore";
 import styles from "../styles/Auth.styles";
 import { TextInput, Button, Text } from "react-native-paper";
 
+/**
+ * `CreateAccount` Screen
+ *
+ * This screen allows users to create an account using their name, email, and password.
+ * Upon successful account creation, the user is navigated to the "RaceDetails" screen.
+ *
+ * @returns {JSX.Element} A screen for user registration.
+ */
 const CreateAccount = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,10 +28,19 @@ const CreateAccount = () => {
 
   const navigation = useNavigation();
 
+  /**
+   * Validates if the form is correctly filled.
+   * @returns {boolean} Returns true if all fields are filled, otherwise false.
+   */
   const isFormValid = () => {
     return name.trim() !== "" && email.trim() !== "" && password.trim() !== "";
   };
 
+  /**
+   * Handles user registration using Firebase Authentication.
+   * If successful, stores user data in Firestore and navigates to "RaceDetails".
+   * Displays an alert in case of an error.
+   */
   const handleSignUp = async () => {
     if (password.length < 6) {
       return;
@@ -53,8 +70,8 @@ const CreateAccount = () => {
   };
 
   const handleGoBack = async () => {
-    navigation.navigate('Login');
-  }
+    navigation.navigate("Login");
+  };
 
   return (
     <View style={styles.container}>
