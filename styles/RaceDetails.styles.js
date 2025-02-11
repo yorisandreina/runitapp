@@ -27,11 +27,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
   },
-  buttonText: {
-    fontSize: 16,
-    color: "white",
-    padding: 5,
-  },
   paceSelectContainer: {
     flexDirection: "row",
     justifyContent: "space-between",

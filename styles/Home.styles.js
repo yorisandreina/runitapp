@@ -14,24 +14,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     fontWeight: "600",
   },
-  item: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 15,
-    paddingHorizontal: 25,
-    marginVertical: 10,
-    backgroundColor: "#f2f2f2",
-    borderRadius: 20,
-  },
-  itemText: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  deleteText: {
-    fontSize: 14,
-    color: "red",
-  },
   modalContainer: {
     backgroundColor: "white",
     padding: 10,
@@ -45,32 +27,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     borderRadius: 5,
   },
-  modalBox: {
-    backgroundColor: "#ffff",
-    borderRadius: 20,
-  },
   navbar: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#fffff",
     marginVertical: 10,
-  },
-  actionButtonText: {
-    color: "#000",
-    fontSize: 16,
-    fontWeight: "500",
-    padding: 18,
-  },
-  modalText: {
-    color: "#000",
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  buttonContainers: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
   },
   markAsCompletedButton: {
     alignItems: "center",
@@ -82,26 +44,6 @@ const styles = StyleSheet.create({
   markAsCompletedText: {
     color: "#fff",
     fontWeight: "500",
-  },
-  titleRenderModalCompleted: {
-    fontSize: 26,
-    paddingTop: 20,
-    paddingBottom: 20,
-    marginHorizontal: 5,
-    fontWeight: "600",
-  },
-  markAsCompletedInput: {
-    padding: 15,
-    marginBottom: 20,
-    borderColor: "#f2f2f2",
-    borderWidth: 1.5,
-    borderRadius: 20,
-  },
-  modalSaveDataText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-    padding: 15,
   },
   settingsButton: {
     backgroundColor: "#f2f2f2",
