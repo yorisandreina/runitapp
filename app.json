@@ -4,11 +4,9 @@
     "slug": "app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.PNG",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/logo.PNG",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
