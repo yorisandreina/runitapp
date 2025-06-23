@@ -23,8 +23,30 @@ const CompletedModal = ({
   onDismiss,
   finishTime,
   setFinishTime,
-  handleMarkAsCompleted,
 }) => {
+
+  const handleMarkAsCompleted = async () => {
+    try {
+      if (userData) {
+        const { uid } = auth.currentUser;
+        const { raceName, raceDate, raceDistance } = userData;
+
+        await addDoc(collection(db, "usersCompletedRaces"), {
+          uid,
+          raceName,
+          raceDate,
+          raceDistance,
+          finishTime,
+        });
+
+        setIsCompletedModalVisible(false);
+        Alert.alert("Successfully marked as completed");
+        navigation.navigate("MyAchievements");
+      }
+    } catch {
+      Alert.alert("Failed to mark as completed");
+    }
+  };
   return (
     <Portal>
       <Modal
